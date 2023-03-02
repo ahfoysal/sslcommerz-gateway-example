@@ -98,17 +98,10 @@ app.post("/ssl-payment-success", async (req, res) => {
   /** 
   * If payment successful 
             */
-         
-   res.status(200).json(
-    { 
-      data: req.body,
-      message: 'Payment success',
-     
-      
-    }
-   
-  );
-  return setTimeout(() => {
+
+
+
+  setTimeout(() => {
     console.log(req.body.tran_id);
     key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
     bodys = `{"status": "completed"}`
@@ -128,6 +121,19 @@ app.post("/ssl-payment-success", async (req, res) => {
         console.log(rslt) })
         
   }, 1000);
+
+
+         
+  return  res.status(200).json(
+    { 
+      data: req.body,
+      message: 'Payment success',
+     
+      
+    }
+   
+  );
+   
 
 })
 
