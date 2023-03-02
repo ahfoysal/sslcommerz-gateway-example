@@ -107,23 +107,9 @@ app.post("/ssl-payment-success", async (req, res) => {
 
  
     console.log(req.body.tran_id);
-    key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
-    bodys = `{"status": "completed"}`
+    postWoocommerce(req)
     console.log(bodys)
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: bodys,
-      redirect: 'follow'
-    };
-    fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders/${req.body.tran_id}?`+key, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        const rslt = result;
-        console.log(rslt) })
-        
+   
 
 
 
@@ -173,6 +159,24 @@ app.listen(process.env.PORT, () =>
   console.log(`ssl app listening on port ${process.env.PORT}!`),
 );
 
-function postWoocommerce() {
-  console.log('ok')
+function postWoocommerce(req) {
+  console.log('function')
+  key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
+  bodys = `{"status": "completed"}`
+
+ 
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: bodys,
+    redirect: 'follow'
+  };
+  fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders/${req.body.tran_id}?`+key, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      const rslt = result;
+      console.log(rslt) })
+      
 }
