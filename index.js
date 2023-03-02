@@ -2,7 +2,11 @@ const express = require('express');
 const SSLCommerzPayment = require("sslcommerz");
 const bodyParser = require('body-parser')
 const app = express()
+var cors = require('cors')
 require('dotenv').config()
+
+
+app.use(cors())  
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
