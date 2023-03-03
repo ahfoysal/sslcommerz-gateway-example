@@ -144,7 +144,7 @@ app.post("/ssl-payment-success", async (req, res) => {
 
 // console.log(ciphertext);
 
-  return res.redirect(`http://localhost:3000/Success/URL?key=${dataString}`)
+  return res.redirect(`https://shop-api-beta.vercel.app/Success/URL?key${dataString}`)
 
    
 
