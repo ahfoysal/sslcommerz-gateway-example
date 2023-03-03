@@ -2,8 +2,15 @@ const express = require('express');
 const SSLCommerzPayment = require("sslcommerz");
 const bodyParser = require('body-parser')
 const app = express()
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr('hellothisismypin');
+const CryptoJS = require('crypto-js');
+const secretKey = 'hellothisismypin';
 var cors = require('cors')
 require('dotenv').config()
+
+
+
 
 
 app.use(cors())  
@@ -19,7 +26,7 @@ app.get('/', async (req, res) => {
   /** 
   * Root url response 
   */
-
+ 
   return res.status(200).json({
     message: "Welcome to sslcommerz gateway",
     url: `${process.env.ROOT}/ssl-request`
@@ -97,32 +104,38 @@ app.post("/ssl-payment-notification", async (req, res) => {
 })
 
 app.post("/ssl-payment-success", async (req, res) => {
-  console.log('nice')
+  console.log('done')
 
   /** 
   * If payment successful 
             */
 
 
+  const encryptedData = CryptoJS.AES.encrypt(req.body.tran_id, secretKey).toString();
+  const encryptedString = cryptr.encrypt(req.body.tran_id);
+// const decryptedString = cryptr.decrypt(encryptedString);
+// console.log(encryptedString)
+// console.log(decryptedString)
 
  
-    console.log(req.body.tran_id);
-    postWoocommerce(req)
-    console.log(bodys)
-   
-
+    // console.log(req.body.tran_id);req.body.tran_id
+    // postWoocommerce(encryptedString)
+    
+  
 
 
          
-  return  res.status(200).json(
-    { 
-      data: req.body,
-      message: 'Payment success',
+  //   res.status(200).json(
+  //   { 
+  //     data: req.body,
+  //     message: 'Payment success',
      
       
-    }
+  //   }
    
-  );
+  // );
+  return res.redirect(`http://localhost:3000/Success/URL?key=${encryptedData}`)
+
    
 
 })
@@ -168,12 +181,13 @@ app.listen(process.env.PORT, () =>
   console.log(`ssl app listening on port ${process.env.PORT}!`),
 );
 
-function postWoocommerce(req) {
+function postWoocommerce(encryptedString) {
   console.log('function')
   key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
   bodys = `{"status": "completed"}`
 
- 
+  const decryptedString = cryptr.decrypt(encryptedString);
+
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   var requestOptions = {
@@ -182,7 +196,7 @@ function postWoocommerce(req) {
     body: bodys,
     redirect: 'follow'
   };
-  fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders/${req.body.tran_id}?`+key, requestOptions)
+  fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders/${decryptedString}?`+key, requestOptions)
     .then(response => response.json())
     .then(result => {
       const rslt = result;
