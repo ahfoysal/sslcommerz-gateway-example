@@ -112,7 +112,7 @@ app.post("/ssl-payment-success", async (req, res) => {
 
 
   const encryptedData = CryptoJS.AES.encrypt(req.body.tran_id, secretKey).toString();
-  const encryptedString = cryptr.encrypt(req.body.tran_id);
+  // const encryptedString = cryptr.encrypt(req.body.tran_id);
 // const decryptedString = cryptr.decrypt(encryptedString);
 // console.log(encryptedString)
 // console.log(decryptedString)
@@ -134,7 +134,17 @@ app.post("/ssl-payment-success", async (req, res) => {
   //   }
    
   // );
-  return res.redirect(`http://localhost:3000/Success/URL?key=${encryptedData}`)
+  console.log(encryptedData)
+  
+
+  var dataString = encryptedData.replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l');
+  console.log(dataString);
+
+
+
+// console.log(ciphertext);
+
+  return res.redirect(`http://localhost:3000/Success/URL?key=${dataString}`)
 
    
 
