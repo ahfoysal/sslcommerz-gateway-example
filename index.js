@@ -253,7 +253,7 @@ app.post("/post", async (request, response) => {
  
  const body1 =  `{"payment_method":"cod" , "customer_id":"34"  , "payment_method_title":"Cash On Delivery" , "billing":{"first_name":"Customer Name","country": "BD","address_1":"Customer Address","phone":"0123456789","email":"CustomerEmail@gmail.com"},"line_items": [{"product_id": 973,"quantity": 3}]}`
  key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
- console.log(body1)
+ console.log(request.body)
  
    var requestOptions = {
      method: 'POST',
