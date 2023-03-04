@@ -6,20 +6,9 @@ const Cryptr = require('cryptr');
 const cryptr = new Cryptr('hellothisismypin');
 const CryptoJS = require('crypto-js');
 const secretKey = 'hellothisismypin';
-var cors = require('cors')
-const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
+var cors = require('cors');
+const { default: axios } = require('axios');
 require('dotenv').config()
-
-
-
-const api = new WooCommerceRestApi({
-  url: "https://shop.abusayeeed.xyz/wp",
-  consumerKey: "ck_7d700d7c05bea9f024076feb890944ad286703f2",
-  consumerSecret: "cs_59a8c6db54711f8a9fc314b95e0ad782a946c191",
-  version: "wc/v3"
-});
-
-
 
 
 
@@ -35,7 +24,9 @@ app.use(bodyParser.json());
 
 app.get('/', async (req, res) => {
 
-
+  /** 
+  * Root url response 
+  */
  
   return res.status(200).json({
     message: "Welcome to sslcommerz gateway",
@@ -43,44 +34,31 @@ app.get('/', async (req, res) => {
   })
 })
 
-app.get('/products', async (req, res) => {
+
+app.get('/test', async (req, res) => {
+
+  /** 
+  * Root url response 
+  */
+  const options = {
+    method: 'GET',
+    url: 'https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/products?consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191',
+   
+}
+
+axios.request(options).then((response) => {
+  console.log(response.data)
+  return  res.json(response.data)
+
+}).catch((error) => {
+    console.error(error)
+})
 
 
   
  
-  return api.get("products", {
-    per_page: 20, // 20 products per page
-  })
-    .then((response) => {
-      res.status(200).json({
-        data: response.data
-      })
-      // Successful request
-      // console.log("Response Status:", response.status);
-      // console.log("Response Headers:", response.headers);
-      console.log("Response Data:", response.data);
-      // console.log("Total of pages:", response.headers['x-wp-totalpages']);
-      // console.log("Total of items:", response.headers['x-wp-total']);
-    })
-    .catch((error) => {
-      // Invalid request, for 4xx and 5xx statuses
-      console.log("Response Status:", error.response.status);
-      console.log("Response Headers:", error.response.headers);
-      console.log("Response Data:", error.response.data);
-    })
-    .finally(() => {
-      // Always executed.
-    });
  
-  return res.status(200).json({
-    message: "Welcome to sslcommerz gateway",
-    url: `${process.env.ROOT}/ssl-request`
-  })
 })
-
-
-
-
 
 
 
@@ -164,28 +142,7 @@ app.post("/ssl-payment-success", async (req, res) => {
 
 
   const encryptedData = CryptoJS.AES.encrypt(req.body.tran_id, secretKey).toString();
-  // const encryptedString = cryptr.encrypt(req.body.tran_id);
-// const decryptedString = cryptr.decrypt(encryptedString);
-// console.log(encryptedString)
-// console.log(decryptedString)
-
  
-    // console.log(req.body.tran_id);req.body.tran_id
-    // postWoocommerce(encryptedString)
-    
-  
-
-
-         
-  //   res.status(200).json(
-  //   { 
-  //     data: req.body,
-  //     message: 'Payment success',
-     
-      
-  //   }
-   
-  // );
   console.log(encryptedData)
   
 
