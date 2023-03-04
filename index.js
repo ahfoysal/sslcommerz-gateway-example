@@ -176,17 +176,18 @@ app.listen(process.env.PORT, () =>
   console.log(`ssl app listening on port ${process.env.PORT}!`),
 );
 
-app.get('/shop/:page', async (req, res) => {
+app.get('/shop/:page/:query', async (req, res) => {
   const page = req.params.page
-console.log(page)
-let result = page.replace(/\+/g,'/')
+  const query = req.params.query
+console.log(page, query)
+let result = page.replace(/\-/g,'/')
 console.log(result)
   /** 
   * Root url response 
   */
   const options = {
     method: 'GET',
-    url: `https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/${result}?${process.env.KEY}`,
+    url: `https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/${result}?${process.env.KEY}${query}`,
    
 }
 
