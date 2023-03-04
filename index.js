@@ -7,7 +7,19 @@ const cryptr = new Cryptr('hellothisismypin');
 const CryptoJS = require('crypto-js');
 const secretKey = 'hellothisismypin';
 var cors = require('cors')
+const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
 require('dotenv').config()
+
+
+
+const api = new WooCommerceRestApi({
+  url: "https://shop.abusayeeed.xyz/wp",
+  consumerKey: "ck_7d700d7c05bea9f024076feb890944ad286703f2",
+  consumerSecret: "cs_59a8c6db54711f8a9fc314b95e0ad782a946c191",
+  version: "wc/v3"
+});
+
+
 
 
 
@@ -23,15 +35,55 @@ app.use(bodyParser.json());
 
 app.get('/', async (req, res) => {
 
-  /** 
-  * Root url response 
-  */
+
  
   return res.status(200).json({
     message: "Welcome to sslcommerz gateway",
     url: `${process.env.ROOT}/ssl-request`
   })
 })
+
+app.get('/products', async (req, res) => {
+
+
+  
+ 
+  return api.get("products", {
+    per_page: 20, // 20 products per page
+  })
+    .then((response) => {
+      res.status(200).json({
+        data: response.data
+      })
+      // Successful request
+      // console.log("Response Status:", response.status);
+      // console.log("Response Headers:", response.headers);
+      console.log("Response Data:", response.data);
+      // console.log("Total of pages:", response.headers['x-wp-totalpages']);
+      // console.log("Total of items:", response.headers['x-wp-total']);
+    })
+    .catch((error) => {
+      // Invalid request, for 4xx and 5xx statuses
+      console.log("Response Status:", error.response.status);
+      console.log("Response Headers:", error.response.headers);
+      console.log("Response Data:", error.response.data);
+    })
+    .finally(() => {
+      // Always executed.
+    });
+ 
+  return res.status(200).json({
+    message: "Welcome to sslcommerz gateway",
+    url: `${process.env.ROOT}/ssl-request`
+  })
+})
+
+
+
+
+
+
+
 
 app.get('/ssl-request/:amount/:orderid', async (req, res) => {
 
@@ -193,8 +245,8 @@ app.listen(process.env.PORT, () =>
 
 function postWoocommerce(encryptedString) {
   console.log('function')
-  key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
-  bodys = `{"status": "completed"}`
+   const key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
+  const  bodys = `{"status": "completed"}`
 
   const decryptedString = cryptr.decrypt(encryptedString);
 
