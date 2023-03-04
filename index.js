@@ -243,3 +243,37 @@ key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs
  
   
 })
+app.post("/post", async (request, response) => {
+// app.post('/post', function(request, response){
+  console.log(JSON.stringify(request.body));      // your JSON
+  //  response.send(request.body); 
+   
+   var myHeaders = new Headers();
+   myHeaders.append("Content-Type", "application/json");
+ 
+ const body1 =  `{"payment_method":"cod" , "customer_id":"34"  , "payment_method_title":"Cash On Delivery" , "billing":{"first_name":"Customer Name","country": "BD","address_1":"Customer Address","phone":"0123456789","email":"CustomerEmail@gmail.com"},"line_items": [{"product_id": 973,"quantity": 3}]}`
+ key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
+ console.log(body1)
+ 
+   var requestOptions = {
+     method: 'POST',
+     headers: myHeaders,
+     body: JSON.stringify(request.body),
+     redirect: 'follow'
+   };
+   fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders?`+key, requestOptions)
+     .then(response => response.json())
+     .then(result => {
+       const rslt = result;
+      //  console.log(rslt)
+       
+       response.json(rslt)
+      
+       })
+     .catch(error => {
+       const rslt = error;
+       // console.log('error', rslt)
+       response.json(rslt)
+     }); 
+ // echo the result back
+});
