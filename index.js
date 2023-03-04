@@ -179,12 +179,14 @@ app.listen(process.env.PORT, () =>
 app.get('/shop/:page', async (req, res) => {
   const page = req.params.page
 console.log(page)
+let result = page.replace(/\+/g,'/')
+console.log(result)
   /** 
   * Root url response 
   */
   const options = {
     method: 'GET',
-    url: `https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/${page}?${process.env.KEY}`,
+    url: `https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/${result}?${process.env.KEY}`,
    
 }
 
@@ -193,7 +195,8 @@ axios.request(options).then((response) => {
   return  res.json(response.data)
 
 }).catch((error) => {
-    console.error(error)
+    // console.error(error)
+    res.json(error)
 })
 
 
