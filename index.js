@@ -242,7 +242,7 @@ app.post("/post", async (request, response) => {
      body: JSON.stringify(request.body),
      redirect: 'follow'
    };
-   fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders?`+WRITEKEY, requestOptions)
+   fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders?`+process.env.WRITEKEY, requestOptions)
      .then(response => response.json())
      .then(result => {
        const rslt = result;
