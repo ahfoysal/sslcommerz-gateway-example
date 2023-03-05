@@ -216,7 +216,6 @@ app.get('/check', async (req, res) => {
   myHeaders.append("Content-Type", "application/json");
 
 const body1 = ` {"payment_method":"cod" , "customer_id":"36"  , "payment_method_title":"Cash On Delivery" , "billing":{"first_name":"Customer Name","country": "BD","address_1":"Customer Address","phone":"0123456789","email":"CustomerEmail@gmail.com"},"line_items": [{"product_id": 973,"quantity": 1}]}`
-key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs_59a8c6db54711f8a9fc314b95e0ad782a946c191'
 
 
   var requestOptions = {
@@ -225,7 +224,7 @@ key='consumer_key=ck_7d700d7c05bea9f024076feb890944ad286703f2&consumer_secret=cs
     body: body1,
     redirect: 'follow'
   };
-  fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders?`+key, requestOptions)
+  fetch(`https://shop.abusayeeed.xyz/wp/wp-json/wc/v3/orders?`+process.env.KEY, requestOptions)
     .then(response => response.json())
     .then(result => {
       const rslt = result;
