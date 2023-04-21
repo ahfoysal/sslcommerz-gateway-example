@@ -147,7 +147,7 @@ app.post("/ssl-payment-success", async (req, res) => {
 
 // console.log(ciphertext);
 
-  return res.redirect(`https://shop-api-beta.vercel.app/Success/URL?key=${dataString}`)
+  return res.redirect(`https://shop.pewds.vercel.app/order/${req.body.tran_id}`)
 
    
 
